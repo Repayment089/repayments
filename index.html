@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repayment Portal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .customer-details h2 {
+            color: #4f46e5;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .detail-label {
+            font-weight: 600;
+            width: 120px;
+            color: #555;
+        }
+        .detail-value {
+            flex: 1;
+        }
+        .product-list {
+            margin: 20px 0;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .product-name {
+            font-weight: 600;
+        }
+        .product-amount {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        .repay-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        .repay-btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .payment-form {
+            display: none;
+        }
+        .amount {
+            font-size: 24px;
+            color: #2e7d32;
+            margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+        .bank-details {
+            margin: 20px 0;
+        }
+        .bank-detail-row {
+            margin-bottom: 15px;
+        }
+        .bank-label {
+            font-weight: 600;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .bank-value {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            word-break: break-all;
+        }
+        .copy-bank-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        .copy-bank-btn:hover {
+            background: #4338ca;
+        }
+        .utr-box {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #e2e8f0;
+        }
+        .utr-input {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .submit-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .submit-btn:hover {
+            background: #4338ca;
+        }
+        .payment-status {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .success-message {
+            background: #ecfdf5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        .payment-instructions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #555;
+            border: 1px dashed #e2e8f0;
+        }
+        .instructions-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card customer-details">
+            <h2>Customer Details</h2>
+            <div class="detail-row">
+                <div class="detail-label">Client Name:</div>
+                <div class="detail-value">Fasal Hasan</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Mobile No.:</div>
+                <div class="detail-value">9895075057</div>
+            </div>
+            
+            <div class="product-list">
+                <h3>Your Product</h3>
+                <div class="product-item">
+                    <span class="product-name">Loan Repayment</span>
+                    <span class="product-amount">₹4000</span>
+                </div>
+            </div>
+            
+            <button class="repay-btn" id="repayBtn">REPAY</button>
+        </div>
+
+        <div class="card payment-form" id="paymentForm">
+            <div class="amount">Amount: ₹4000</div>
+            
+            <div class="bank-details">
+                <div class="bank-detail-row">
+                    <span class="bank-label">Account Name:</span>
+                    <div class="bank-value">RASHID ALI</div>
+                </div>
+                <div class="bank-detail-row">
+                    <span class="bank-label">Bank Name:</span>
+                    <div class="bank-value">NSDL Payments Bank</div>
+                </div>
+                <div class="bank-detail-row">
+                    <span class="bank-label">Account Number:</span>
+                    <div class="bank-value" id="accountNumber">501044004724</div>
+                    <button class="copy-bank-btn" onclick="copyToClipboard('accountNumber')">Copy Account Number</button>
+                </div>
+                <div class="bank-detail-row">
+                    <span class="bank-label">IFSC Code:</span>
+                    <div class="bank-value" id="ifscCode">NSPB0000002</div>
+                    <button class="copy-bank-btn" onclick="copyToClipboard('ifscCode')">Copy IFSC Code</button>
+                </div>
+                <div class="bank-detail-row">
+                    <span class="bank-label">Branch Name:</span>
+                    <div class="bank-value">One International Center, Prabhadevi</div>
+                </div>
+            </div>
+            
+            <div class="payment-instructions">
+                <div class="instructions-title">Payment Instructions:</div>
+                1. Use these bank details for NEFT/RTGS/IMPS transfer<br>
+                2. Transfer the exact amount of ₹4000<br>
+                3. Complete the payment and wait for confirmation<br>
+                4. Note down the UTR/Reference number from your transaction
+            </div>
+            
+            <div class="utr-box">
+                <div>Enter UTR/Reference Number after payment:</div>
+                <input type="text" class="utr-input" id="utrNumber" placeholder="Enter UTR/Reference number">
+                <button class="submit-btn" onclick="submitUtr()">Submit Payment Details</button>
+            </div>
+            
+            <div id="paymentStatus" class="payment-status success-message">
+                Payment Successful!<br><br>
+                Your payment of ₹4000 has been processed successfully.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Show payment form when REPAY button is clicked
+        document.getElementById('repayBtn').addEventListener('click', function() {
+            document.getElementById('paymentForm').style.display = 'block';
+            this.style.display = 'none';
+            
+            // Scroll to payment form
+            document.getElementById('paymentForm').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const textArea = document.createElement('textarea');
+            textArea.value = element.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            const copyBtn = event.target;
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            copyBtn.style.background = '#10b981';
+            
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = '#4f46e5';
+            }, 2000);
+        }
+        
+        function submitUtr() {
+            const utrNumber = document.getElementById('utrNumber').value.trim();
+            if (utrNumber === '') {
+                alert('Please enter UTR/Reference number');
+                return;
+            }
+            
+            // Show processing message
+            document.getElementById('paymentStatus').style.display = 'block';
+            document.getElementById('paymentStatus').textContent = "Processing your payment...";
+            
+            // Simulate payment processing (5 seconds delay)
+            setTimeout(function() {
+                document.getElementById('paymentStatus').innerHTML = `
+                    Payment Successful!<br><br>
+                    Your payment of ₹4000 has been processed successfully.
+                `;
+                
+                // Clear the form
+                document.getElementById('utrNumber').value = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
